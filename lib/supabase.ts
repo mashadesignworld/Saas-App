@@ -1,16 +1,15 @@
-import { createClient}from "@supabase/supabase-js";
-import { auth }  from "@clerk/nextjs/server";
+import { createClient } from "@supabase/supabase-js";
+import { auth } from "@clerk/nextjs/server";
 
-export const createSupabaseClient =() =>{
-    return createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY!,
-        {
-            async accessToken(){
+export const createSupabaseClient = async () => {
+  const { getToken } = await auth();
 
-                return((await auth()).getToken());
-            }
-        }
+  const token = await getToken({ template: "supabase" });
+  console.log("Token", token);
 
-    )
-}
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SERVICE_ROLE_KEY!, 
+  
+  );
+};

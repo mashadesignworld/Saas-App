@@ -1,5 +1,5 @@
                     "use client"
-
+                    import { redirect } from "next/navigation"
                     import { zodResolver } from "@hookform/resolvers/zod"
                     import { useForm } from "react-hook-form"
                     import { z } from "zod"
@@ -23,6 +23,7 @@
                     SelectValue,
                     } from "@/components/ui/select"
                     import { Textarea } from "@/components/ui/textarea"
+import { createCompanion } from "@/lib/actions/companion.actions"
 
                     // 1. Define a single, clean schema for your Companion
                     const formSchema = z.object({
@@ -49,8 +50,16 @@
                         })
 
                         // 3. Submit handler
-                        const onSubmit = (values: z.infer<typeof formSchema>) => {
-                            console.log("Form Values:", values)
+                        const onSubmit = async (values: z.infer<typeof formSchema>) => {
+                          const companion = await createCompanion(values);
+                          
+                          if(companion) {
+                            redirect(`/companions/${companion.id}`); // Redirect to the new companion's page
+                          }
+                          else {
+                            console.log("Failed to create companion");
+                            redirect('/')
+                          }
                         }
 
                         const subjects = [
