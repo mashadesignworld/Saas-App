@@ -9,11 +9,13 @@ export const subjects = [
 
 export const subjectsColors = {
   science: "#E5D0FF",
-  maths: "#FFDA6E",
+  maths: "#AEDBA3",
+  math: "#AEDBA3", 
   language: "#BDE7FF",
   coding: "#FFC8E4",
   history: "#FFECC8",
   economics: "#C8FFDF",
+  programming:"#ccddff",
 };
 
 export const voices = {

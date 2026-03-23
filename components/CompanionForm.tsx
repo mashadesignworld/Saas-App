@@ -241,4 +241,4 @@ import { createCompanion } from "@/lib/actions/companion.actions"
                         )
                     }
 
-                    export default CompanionForm
+               export default CompanionForm
