@@ -3,6 +3,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { createSupabaseClient } from "../supabase";
 
+
 export const createCompanion = async (formData: CreateCompanion) => {
     const { userId: author } = await auth();
     const supabase = await createSupabaseClient();
@@ -68,8 +69,61 @@ export const getCompanion = async (id: string) => {
   return data;
 }
 
+export const addToSessionHistory = async (companionId: string)=>{
 
+  const {userId} = await auth();
+
+  const supabase = await createSupabaseClient();
+
+  const { data , error } = await supabase 
+  .from('session_history')
+  .insert({companion_id: companionId,
+    user_id: userId,
+
+  })
+
+  if(error) throw new Error(error.message);
+
+  return data;
+ }
  
+export const getRecentSessions = async (limit = 10) => {
+  const supabase = await createSupabaseClient();
+
+  const { data, error } = await supabase
+    .from("session_history")
+    .select(`companions:companion_id(*)`)
+    .order("created_at", { ascending: false })
+    .limit(limit);
+
+  if (error) throw new Error(error.message);
+
+  // extract companion object from array
+  const companions = data
+    .map(({ companions }) => companions?.[0])
+    .filter(Boolean);
+
+  // deduplicate
+  const unique = Array.from(
+    new Map(companions.map((c) => [c.id, c])).values()
+  );
+
+  return unique;
+};
+
+export const getUserRecentSessions = async (userId: string, limit=10) => {
+  const supabase = await createSupabaseClient();
+  const { data, error } = await supabase
+    .from('session_history')
+    .select(`companions:companion_id(*)`)
+    .eq('user_id',userId)
+    .order('created_at', {ascending: false})
+    .limit(limit)
+
+    if(error) throw new Error(error.message);
+
+    return data.map(({ companions }) => companions);
+}
 
 
 
