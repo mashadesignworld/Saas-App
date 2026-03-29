@@ -98,10 +98,12 @@ export const getRecentSessions = async (limit = 10) => {
 
   if (error) throw new Error(error.message);
 
-  // extract companion object from array
+  if (!data) return [];
+
+  // extract companions safely
   const companions = data
-    .map(({ companions }) => companions?.[0])
-    .filter(Boolean);
+    .map((row) => row?.companions)
+    .filter((c): c is Companion => !!c && !!c.id);
 
   // deduplicate
   const unique = Array.from(
@@ -125,13 +127,49 @@ export const getUserRecentSessions = async (userId: string, limit=10) => {
     return data.map(({ companions }) => companions);
 }
 
+export const getUserCompanions = async (userId: string) => {
+  const supabase = await createSupabaseClient();
+  const { data, error } = await supabase
+    .from('companions')
+    .select()
+    .eq('author',userId)
+    
+
+    if(error) throw new Error(error.message);
+
+    return data;
+}
 
 
+export const newCompanionPermissions = async ()=>{
+  const {userId, has} = await auth();
+  const supabase = await createSupabaseClient();
 
+  let limit = 0;
 
+  if(has ({plan: 'pro'})) {
+    return true;
+  } else if(has({ feature: '3_active_companions'})) {
+    limit = 3;
+  }
+else if(has({ feature: '10_active_companions'})) {
+    limit = 10;
+  }
 
+  const { data, error } = await supabase
+  .from('companions')
+  .select('id', { count: 'exact'})
+  .eq('author', userId);
 
+  if(error) throw new Error(error.message);
 
+  const companionCount = data?.length;
+  if(companionCount > limit) {
+    return false;
+  } else {
+    return true;
+  }
+};
 
 
 

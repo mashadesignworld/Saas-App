@@ -21,9 +21,10 @@ interface CompanionsListProps {
 }
 
 const CompanionsList = ({ title, companions, classNames } : CompanionsListProps) => {
+  console.log("Companions Data:", companions);
   return (
     <article className={cn('companion-list', classNames)}>
-        <h2 className="font-bold text-2xl">Recently Completed Sessions</h2>
+        <h2 className="font-bold text-2xl">{title}</h2>
         <Table>
   
   <TableHeader>
@@ -35,7 +36,12 @@ const CompanionsList = ({ title, companions, classNames } : CompanionsListProps)
     </TableRow>
   </TableHeader>
   <TableBody>
-    {companions?.map(({ id, subject,name, topic, duration}) => (
+    {companions?.map((companion) => {
+    if (!companion) return null;
+
+    const { id, subject, name, topic, duration } = companion;
+
+    return (
       <TableRow key={id}>
         <TableCell>
           <Link href={`/companions/${id}`}>
@@ -78,12 +84,12 @@ const CompanionsList = ({ title, companions, classNames } : CompanionsListProps)
           </div>
         </TableCell>
       </TableRow>
-    ))}
-    
+    );
+  })}
   </TableBody>
 </Table>
     </article>
-  )
-}
+  );
+};
 
 export default CompanionsList
