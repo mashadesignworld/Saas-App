@@ -63,12 +63,15 @@ import { createCompanion } from "@/lib/actions/companion.actions"
                         }
 
                         const subjects = [
-                            "math",
-                            "science",
-                            "history",
-                            "programming",
-                            "business",
-                            "english",
+                      "maths",
+                      "language",
+                      "science",
+                      "history",
+                      "coding",
+                      "geography",
+                      "economics",
+                      "finance",
+                      "business",
                             ]
                     const voices=[
                         "calm",

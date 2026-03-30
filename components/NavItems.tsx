@@ -4,32 +4,35 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-const navItems =[
-    {label:'Home', href:'/'},
-    {label:'Companions', href:'/companions'},
-    {label:'My Journey', href:'/my-journey'},
-    {label:'Subscription', href:'/subscription'},
-
+const navItems = [
+  { label: 'Home', href: '/' },
+  { label: 'Companions', href: '/companions' },
+  { label: 'My Journey', href: '/my-journey' },
+  { label: 'Subscription', href: '/subscription' },
 ]
 
-
 const NavItems = () => {
-    const pathname = usePathname();
+  const pathname = usePathname();
+
   return (
-    <nav className="flex items-center gap-4">
-        {navItems.map(({ label, href})=>(
-            <Link 
-            key={href} 
-            href={href}
-            className={cn(pathname === href && 'font-semibold  rounded-md bg-gradient-to-br from-teal-600 to-cyan-700 shadow-lg shadow-teal-900/30 hover:from-teal-500 hover:to-cyan-600 hover:shadow-teal-500/40 hover:scale-[1.02] active:scale-95 transition-all duration-300 border border-teal-400/20 text-white py-2 px-6')}
-            
-            >
-                {label}
-            </Link>
-         )
-        )}
-    </nav>
+    <div className="flex items-center gap-2">
+      {navItems.map(({ label, href }) => (
+        <Link
+          key={href}
+          href={href}
+          className={cn(
+            "px-5 py-2 text-sm transition-all duration-300 rounded-full border border-transparent",
+            // Active state: subtle teal border and glow instead of a solid block
+            pathname === href 
+              ? "text-white border-teal-500/30 bg-teal-500/10 shadow-[0_0_15px_rgba(20,184,166,0.1)] font-semibold" 
+              : "text-slate-400 hover:text-white hover:bg-white/5"
+          )}
+        >
+          {label}
+        </Link>
+      ))}
+    </div>
   )
 }
 
-export default NavItems
+export default NavItems;
