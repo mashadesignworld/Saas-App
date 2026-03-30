@@ -11,9 +11,9 @@ const Navbar = () => {
         <div className="flex items-center gap-2.5 cursor-pointer hover:opacity-80 transition-opacity">
           <Image 
             src="/images/logo4.png" 
-            alt="logo" 
-            width={100} 
-            height={100}
+            alt="logo"  
+            width={130} 
+            height={130}
             className="rounded-xl" 
           />
         </div>
