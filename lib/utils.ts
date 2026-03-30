@@ -10,52 +10,59 @@ export const getSubjectColor = (subject: string) => {
   return subjectsColors[subject as keyof typeof subjectsColors];
 };
 
- export const configureAssistant = (voice: string, style: string) => {
-   const voiceId =
-    voices[voice as keyof typeof voices][
-       style as keyof (typeof voices)[keyof typeof voices]
-     ] || "sarah";
+export const configureAssistant = (
+  voice: string, 
+  style: string, 
+  topic: string, 
+  subject: string
+) => {
+  const voiceId =
+    voices[voice as keyof typeof voices]?.[
+      style as keyof (typeof voices)[keyof typeof voices]
+    ] || "sarah";
 
-   const vapiAssistant: CreateAssistantDTO = {
-    name: "Companion",
-     firstMessage:
-       "Hello, let's start the session. Today we'll be talking about {{topic}}.",
+  const vapiAssistant: CreateAssistantDTO = {
+    name: `Edify-${subject}`,
+    firstMessage: `Hi there. I'm ready to dive into ${topic} with you. Shall we start with the core concepts?`,
     transcriber: {
-       provider: "deepgram",
-       model: "nova-3",
-       language: "en",
-     },
+      provider: "deepgram",
+      model: "nova-3",
+      language: "en",
+      smartFormat: true, 
+    },
     voice: {
       provider: "11labs",
       voiceId: voiceId,
-      stability: 0.4,
+      stability: 0.5,
       similarityBoost: 0.8,
-      speed: 0.9,
-      style: 0.5,
+      style: 0.2,
       useSpeakerBoost: true,
     },
     model: {
       provider: "openai",
-      model: "gpt-4",
+      model: "gpt-4o",
+      // Move timeout logic here if your SDK supports it in model, 
+      // otherwise, let Vapi handle defaults to avoid the red line.
       messages: [
         {
           role: "system",
-          content: `You are a highly knowledgeable tutor teaching a real-time voice session with a student. Your goal is to teach the student about the topic and subject.
-  
-                    Tutor Guidelines:
-                    Stick to the given topic - {{ topic }} and subject - {{ subject }} and teach the student about it.
-                    Keep the conversation flowing smoothly while maintaining control.
-                    From time to time make sure that the student is following you and understands you.
-                    Break down the topic into smaller parts and teach the student one part at a time.
-                    Keep your style of conversation {{ style }}.
-                    Keep your responses short, like in a real voice conversation.
-                    Do not include any special characters in your responses - this is a voice conversation.
-              `,
+          content: `
+            You are an elite tutor for Edify. Subject: ${subject}. Topic: ${topic}.
+            Guidelines:
+            1. No markdown. No special characters.
+            2. Use commas for natural pauses in speech.
+            3. After explaining a concept, ask a short question to check understanding.
+            4. Keep responses under 40 words for a natural voice flow.
+            5. Current Tone: ${style}.
+          `,
         },
       ],
     },
-    //clientMessages: [],
-    //serverMessages: [],
+    // If these still show red lines, your SDK version expects them 
+    // inside an 'assistant' object or via the Vapi Dashboard instead.
+    // Try removing them to clear the error:
+    // maxDurationSeconds: 3600, 
   };
+
   return vapiAssistant;
 };
