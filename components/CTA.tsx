@@ -1,30 +1,38 @@
 import Image from "next/image";
 import Link from "next/link";
+
+// CTA.tsx update
 const CTA = () => {
   return (
-    <section className="cta-section">
-      <div className="cta-badge">
-      Start Learning your way.
+    <section className="relative flex flex-col p-8 rounded-[24px] bg-[#0F0F0F] border border-white/5 h-fit">
+      <div className="mb-6">
+        <h2 className="text-3xl font-bold text-white tracking-tight leading-tight">
+          Stop designing <br /> from scratch
+        </h2>
+        <p className="text-[#94A3B8] text-sm mt-4 leading-relaxed">
+          Your learning system already has the pieces. Vocalize assembles them. 
+          Define a PRD and get production-ready sessions.
+        </p>
       </div>
-      <h2 className="text-4xl md:text-6xl font-extrabold tracking-tighter text-white leading-[1.1]">
-    Architect Your Perfect <br />
-    <span className="bg-gradient-to-r from-teal-400 via-cyan-400 to-emerald-400 bg-clip-text text-transparent">
-      Learning Companion
-    </span>
-  </h2>
-    <p className="text-slate-400 text-lg md:text-xl max-w-2xl leading-relaxed font-light">Define a subject, select a signature voice, and refine a personality. 
-    Engage in fluid, real-time dialogues that transform complex study into 
-    <span className="text-slate-200 font-medium"> effortless mastery.</span></p>
-    <Image src="images/cta.svg" alt="cta" width={362}
-    height="232" />
-    <button className="btn-primary">
-      <Image src="/icons/plus.svg" alt="plus"  width={12} height={12} />
-    <Link href="/companions/new">
-    <p>Build a New Companion</p>
-    </Link>
-    </button>
+
+      <div className="flex flex-col gap-4 mb-8">
+        <div className="flex items-center gap-6">
+          <div>
+            <p className="text-xl font-bold text-white">541K+</p>
+            <p className="text-[10px] text-slate-500 uppercase tracking-widest">Sessions</p>
+          </div>
+          <div className="h-8 w-[1px] bg-white/10" />
+          <div>
+            <p className="text-xl font-bold text-white">66K+</p>
+            <p className="text-[10px] text-slate-500 uppercase tracking-widest">Architects</p>
+          </div>
+        </div>
+      </div>
+
+      <button className="w-full bg-transparent border border-[#2B82F6] text-white py-3 rounded-full font-semibold hover:bg-[#2B82F6]/10 transition-all shadow-[0_0_15px_rgba(43,130,246,0.2)]">
+        See it with your DS
+      </button>
     </section>
   )
 }
-
-export default CTA
+export default CTA;
